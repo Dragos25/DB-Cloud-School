@@ -12,10 +12,12 @@ public class MainStudents {
         Student student6 = new Student("Maria", 9.4d);
         Student student7 = new Student("Diana", 5.3d);
         Student student8 = new Student("Roxana", 10d);
+        Student student9 = new Student("Roxana", 9.8d);
 
 
         for(int i=1;i<=10;i++){
             TreeSet<Student> newTree = new TreeSet<>();
+            newTree = (TreeSet<Student>) newTree.descendingSet();
             grades.put(i,newTree);
         }
 
@@ -29,6 +31,7 @@ public class MainStudents {
         addStudentToMap(student6, grades);
         addStudentToMap(student7, grades);
         addStudentToMap(student8, grades);
+        addStudentToMap(student9, grades);
 
         printMap(grades);
 
@@ -43,6 +46,7 @@ public class MainStudents {
         else grade = Math.floor(grade);
 
         map.get((int)grade).add(student);
+
 
     }
 
