@@ -4,6 +4,9 @@ public class MainMyList {
         list.add(1);
         list.add(2);
         list.add(7);
+        list.add(9);
+        list.add(10);
+        list.add(10);
         list.print();
         MyList<Student> listStudents = new MyList<>(10);
         Student student1 = new Student("Marcel", 9.5d);

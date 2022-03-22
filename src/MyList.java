@@ -1,11 +1,17 @@
 public class MyList<T> {
     private T[] elements;
     private int size=0;
+    private int maxDim=0;
     public MyList(int dimension){
         elements = (T[])new Object[dimension];
+        this.maxDim = dimension;
     }
 
     public void add(T element){
+        if(size+1>maxDim){
+            System.out.println("Max dimension reached, element was not added!");
+            return;
+        }
         elements[size++] = element;
     }
 
