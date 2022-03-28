@@ -1,3 +1,5 @@
+import Data.Customer;
+
 import java.sql.*;
 import java.util.ArrayList;
 

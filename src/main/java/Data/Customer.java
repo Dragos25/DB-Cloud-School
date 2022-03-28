@@ -1,3 +1,5 @@
+package Data;
+
 public class Customer {
 
     private int id;
@@ -99,7 +101,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
+        return "Data.Customer{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", lastName='" + lastName + '\'' +
