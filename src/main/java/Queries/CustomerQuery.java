@@ -1,3 +1,5 @@
+package Queries;
+
 import Data.Customer;
 
 import java.sql.*;
