@@ -16,5 +16,4 @@ public class Customer {
     private String username;
     private String city;
     private String country;
-
 }

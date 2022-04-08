@@ -6,8 +6,6 @@ import com.example.demo.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,9 +46,6 @@ public class CustomerService {
             customerRepository.delete(c.get());
             return true;
         }
-
         else return false;
-
-
     }
 }

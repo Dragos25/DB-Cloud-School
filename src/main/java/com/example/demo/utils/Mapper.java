@@ -1,4 +1,4 @@
-package com.example.demo.Utils;
+package com.example.demo.utils;
 
 import com.example.demo.dto.CustomerDTO;
 import com.example.demo.model.Customer;
