@@ -1,3 +1,7 @@
+package com.example.demo;
+
+import com.example.demo.model.User;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -6,6 +10,11 @@ import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
+
+        //initial facusem fara spring apoi am convertit
+        //am lasat si clasa de aici unde am rezolvat initial
+
+
         //Create a stream with 3 users
         Integer userCount=10;
         Stream<User> users = Stream.generate(() -> User.createUser()).limit(userCount);
