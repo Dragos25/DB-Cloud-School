@@ -13,11 +13,7 @@ public class DemoController {
 
     private final UserService userService;
     private static List<User> users;
-    @GetMapping("/demo")
-    public String test(){
-        return "alo";
-    }
-
+    
     @PostMapping("/generate/{howMany}")
     public List<User> generateList(@PathVariable Integer howMany){
         users = userService.generateList(howMany);
