@@ -1,23 +1,36 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.utils.Mapper;
-import com.example.demo.utils.PasswordEncrypt;
 import com.example.demo.dto.CustomerDTO;
+import com.example.demo.jwt.JwtRequestModel;
+import com.example.demo.jwt.JwtResponseModel;
+import com.example.demo.jwt.JwtUserDetailsService;
 import com.example.demo.model.Customer;
 import com.example.demo.services.CustomerService;
-import lombok.AllArgsConstructor;
+import com.example.demo.utils.Mapper;
+import com.example.demo.utils.PasswordEncrypt;
+import com.example.demo.utils.TokenManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@CrossOrigin
 public class DemoController {
-
+    @Autowired
+    private JwtUserDetailsService userDetailsService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenManager tokenManager;
 
     private CustomerService customerService;
     @GetMapping("/customers")
@@ -37,37 +50,24 @@ public class DemoController {
         return customerService.add(customer);
     }
 
-    @PostMapping("/customers/login")
-    public String login(@RequestBody Customer details, HttpServletResponse response){
-        Customer c = customerService.getByUsername(details.getUsername());
-        if(c==null)
-            return "Username nu exista";
-        if(c.getPassword().equals(PasswordEncrypt.encrypt(details.getPassword()))) {
-            Cookie userName = new Cookie("username", details.getUsername());
-            userName.setMaxAge(60);
-            userName.setPath("/");
-            response.addCookie(userName);
-            return "Ai fost logat";
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponseModel> login(@RequestBody JwtRequestModel request) throws Exception{
+        try {
+            authenticationManager.authenticate(
+                    new
+                            UsernamePasswordAuthenticationToken(request.getUsername(),
+                            request.getPassword())
+            );
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
         }
-        return "Parola gresita";
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+        final String jwtToken = tokenManager.generateJwtToken(userDetails);
+        return ResponseEntity.ok(new JwtResponseModel(jwtToken));
     }
 
-    @PostMapping("/customers/logout")
-    public String logout(@CookieValue(value = "username", defaultValue = "notLogged") String username, HttpServletResponse response){
-        if(username.equals("notLogged"))
-            return "Nu esti logat!";
-        Cookie userName = new Cookie("username", "notLogged");
-        userName.setMaxAge(60);
-        userName.setPath("/");
-        response.addCookie(userName);
-        return "Ai iesit din cont!";
 
-    }
-
-    @GetMapping("/customers/isLogged")
-    public String isLogged(@CookieValue(value = "username", defaultValue = "notLogged") String username){
-        if(username.equals("notLogged")) return "Nu esti logat!";
-        return "Logat cu userul " + username;
-
-    }
 }
+
